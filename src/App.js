@@ -1,6 +1,7 @@
 import React from 'react';
-import './App.css';
+// import './App.css';
 import styled, {css} from 'styled-components';
+import Button from './components/Button';
 // 중첩 Tagged Template Literal을 사용하려면 css가 필요
 
 const Circle = styled.div`
@@ -16,9 +17,19 @@ const Circle = styled.div`
     `}
 `
 
+const AppBlock = styled.div`
+  width: 512px;
+  margin: 4rem auto 0;
+  border: 1px solid black;
+  padding: 1rem;
+`;
+
 function App() {
   return (
-    <Circle color="blue" huge />
+    <AppBlock>
+      <Button>Buttton</Button>
+    </AppBlock>
+    // <Circle color="blue" huge />
   );
 }
 
