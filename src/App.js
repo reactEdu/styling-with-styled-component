@@ -1,6 +1,6 @@
 import React from 'react';
 // import './App.css';
-import styled, {css} from 'styled-components';
+import styled, { css, ThemeProvider } from 'styled-components';
 import Button from './components/Button';
 // 중첩 Tagged Template Literal을 사용하려면 css가 필요
 
@@ -24,12 +24,21 @@ const AppBlock = styled.div`
   padding: 1rem;
 `;
 
+const palette = {
+  blue: '#228be6',
+  gray: '#496057',
+  pink: '#f06595',
+};
+
 function App() {
   return (
-    <AppBlock>
-      <Button>Buttton</Button>
-    </AppBlock>
-    // <Circle color="blue" huge />
+    <ThemeProvider theme={{palette}}>
+      <AppBlock>
+        <Button>Buttton</Button>
+        <Button color="gray">Buttton</Button>
+        <Button color="pink">Buttton</Button>
+      </AppBlock>
+    </ThemeProvider>
   );
 }
 
