@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import styled, { keyframes } from "styled-components";
+import styled, { css, keyframes } from "styled-components";
 import Button from "./Button";
 
 const fadeIn = keyframes`
@@ -11,12 +11,30 @@ const fadeIn = keyframes`
     }
 `;
 
+const fadeOut = keyframes`
+    from {
+        opacity: 1;
+    }
+    to {
+        opacity: 0;
+    }
+`;
+
 const slideUp = keyframes`
     from {
         transform: translateY(200px);
     }
     to {
         transform: translateY(0px);
+    }
+`;
+
+const slideDown = keyframes`
+    from {
+        transform: translateY(0px);
+    }
+    to {
+        transform: translateY(200px);
     }
 `;
 
@@ -35,6 +53,10 @@ const DarkBackground = styled.div`
   animation-timing-function: ease-out;
   animation-name: ${fadeIn};
   animation-fill-mode: forwards;
+
+  ${props => props.disappear && css`
+    animation-name: ${fadeOut}
+  `};
 `;
 
 const DialogBlock = styled.div`
@@ -56,6 +78,10 @@ const DialogBlock = styled.div`
   animation-timing-function: ease-out;
   animation-name: ${slideUp};
   animation-fill-mode: forwards;
+
+  ${props => props.disappear && css`
+    animation-name: ${slideDown}
+  `};
 `;
 
 const ButtonGroup = styled.div`
@@ -79,22 +105,21 @@ const Dialog = ({
   onConfirm,
   onCancel,
 }) => {
-  const [animate, setAnimate] = useState(false); // 애니메이션 상태
-  const [localVisible, setLocalVisible] = useState(visible); // 현재 상태가 true인지 false인지
+  const [animate, setAnimate] = useState(false); // 현재 애니메이션 보여주는 중
+  const [localVisible, setLocalVisible] = useState(visible); // dialog 자체가 가지는 현재 visible상태가 true인지 false인지에 대한 상태
   useEffect(() => {
-      if(localVisible && !visible) {
+      if(localVisible && !visible) { // visible이 true에서 false로 바뀌는 상태
         setAnimate(true);
         setTimeout(() => setAnimate(false), 1000);
       }
-      setLocalVisible(visible);
+      setLocalVisible(visible); // visible이 바뀔때마다 localVisible도 동기화
   }, [localVisible, visible]);
 
   if (!localVisible && !animate) return null;
 
   return (
-    <>
-      <DarkBackground>
-        <DialogBlock>
+      <DarkBackground disappear={!visible}>
+        <DialogBlock disappear={!visible}>
           <h3>{title}</h3>
           <p>{children}</p>
           <ButtonGroup>
@@ -107,7 +132,6 @@ const Dialog = ({
           </ButtonGroup>
         </DialogBlock>
       </DarkBackground>
-    </>
   );
 };
 
