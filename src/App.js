@@ -1,7 +1,8 @@
-import React from 'react';
+import React, { useState } from 'react';
 // import './App.css';
 import styled, { css, ThemeProvider } from 'styled-components';
 import Button from './components/Button';
+import Dialog from './components/Dialog';
 // 중첩 Tagged Template Literal을 사용하려면 css가 필요
 
 const Circle = styled.div`
@@ -37,6 +38,16 @@ const palette = {
 };
 
 function App() {
+  const [dialog, setDialog] = useState(false);
+  const onClick = () => {
+    setDialog(true);
+  }
+  const onConfirm = () => {
+    setDialog(false);
+  }
+  const onCancel = () => {
+    setDialog(false);
+  }
   return (
     <ThemeProvider theme={{palette}}>
       <AppBlock>
@@ -55,7 +66,13 @@ function App() {
           <Button size="medium" color="pink" fullWidth>Buttton</Button>
           <Button size="large" fullWidth>Buttton</Button>
         </ButtonGroup>
+        <ButtonGroup>
+          <Button size="large" fullWidth onClick={onClick}>삭제</Button>
+        </ButtonGroup>
       </AppBlock>
+      <Dialog title="정말로 삭제?" confirmText="삭제" cancelText="취소" visible={dialog} onConfirm={onConfirm} onCancel={onCancel}>
+        데이터를 정말로 삭제?
+      </Dialog>
     </ThemeProvider>
   );
 }
